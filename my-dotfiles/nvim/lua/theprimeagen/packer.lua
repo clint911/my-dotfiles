@@ -25,6 +25,8 @@ return require('packer').startup(function(use)
   --debugging
   use("mfussenegger/nvim-dap")
   use({ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } })
+  --nvim-dap-vscode
+  use("mxsdev/nvim-dap-vscode-js")
   --todo comments
   use("kyazdani42/nvim-web-devicons")
   --terminal
@@ -47,7 +49,7 @@ return require('packer').startup(function(use)
     end
   })
   --trying rainbow parens
-  use('HiPhish/nvim-ts-rainbow2')
+  --  use('HiPhish/nvim-ts-rainbow2')
   --lualine
   use('nvim-lualine/lualine.nvim')
   --devicons
