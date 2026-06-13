@@ -154,6 +154,9 @@ alias tb='nc termbin.com 9999'
 alias helpme='cht.sh --shell'
 alias pacdiff='sudo -H DIFFPROG=meld pacdiff'
 
+# My own alias
+alias cpwd='pwd | tr -d "\n" | xclip -selection clipboard && echo "Path copied!"'
+
 # Cleanup orphaned packages
 alias cleanup='sudo pacman -Rns $(pacman -Qtdq)'
 
@@ -179,4 +182,16 @@ case ":$PATH:" in
 esac
 # pnpm end
 #
-figlet V4N17Y
+figlet D4RK P4SS3NG3R
+export PATH="$HOME/.local/bin:$PATH"
+xset led 3
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+export PATH=$PATH:$HOME/go/bin
+
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+
+
