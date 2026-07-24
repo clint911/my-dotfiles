@@ -1,0 +1,109 @@
+ /* =====================================================================
+ * Windows XP Luna Theme (Centered System Launcher)
+ * ===================================================================== */
+
+configuration {
+    modi:               "drun,run,window";
+    font:               "Tahoma 10";
+    show-icons:         true;
+    icon-theme:         "Windows-7";
+    terminal:           "kitty";
+    drun-display-format: "{name}";
+    sidebar-mode:       false;
+}
+
+* {
+    /* Core XP Luna Palette */
+    xp-blue-dark:       #0055EA;
+    xp-blue-header:     #0972DA;
+    xp-blue-select:     #316AC5;
+    xp-bevel-top:       #3D91FF;
+    xp-border:          #003399;
+    xp-bg-white:        #FFFFFF;
+    xp-text-dark:       #000000;
+    xp-text-white:      #FFFFFF;
+    xp-text-muted:      #666666;
+
+    background-color:   transparent;
+    font:               "Tahoma 10";
+}
+
+window {
+    location:           center;
+    anchor:             center;
+    width:              520px;
+
+    background-color:   @xp-bg-white;
+    border:             2px;
+    border-color:       @xp-border;
+    border-radius:      6px;
+}
+
+mainbox {
+    padding:            0px;
+    children:           [ inputbar, listview ];
+}
+
+/* XP Blue Top Banner */
+inputbar {
+    background-color:   @xp-blue-dark;
+    border-color:       @xp-bevel-top;
+    border:             2px 0px 0px 0px;
+    padding:            12px 14px;
+    spacing:            10px;
+    children:           [ prompt, entry ];
+}
+
+prompt {
+    text-color:         @xp-text-white;
+    font:               "Tahoma Bold 10";
+    str:                "Run:";
+}
+
+entry {
+    background-color:   @xp-bg-white;
+    text-color:         @xp-text-dark;
+    placeholder:        "Type to filter...";
+    placeholder-color:  @xp-text-muted;
+    padding:            6px 8px;
+    border-radius:      2px;
+    font:               "Tahoma 10";
+}
+
+/* Application List */
+listview {
+    background-color:   @xp-bg-white;
+    padding:            8px;
+    lines:              8;
+    columns:            1;
+    spacing:            3px;
+}
+
+element {
+    padding:            8px 10px;
+    border-radius:      3px;
+    background-color:   transparent;
+    text-color:         @xp-text-dark;
+    children:           [ element-icon, element-text ];
+    spacing:            12px;
+}
+
+element-icon {
+    size:               28px;
+}
+
+element-text {
+    vertical-align:     0.5;
+    text-color:         inherit;
+    font:               "Tahoma 10";
+}
+
+/* XP Blue Selection Highlight */
+element selected {
+    background-color:   @xp-blue-select;
+    text-color:         @xp-text-white;
+}
+
+element-text selected {
+    text-color:         @xp-text-white;
+}

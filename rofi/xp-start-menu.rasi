@@ -1,0 +1,32 @@
+ /* =====================================================================
+ * Windows XP Start Menu Layout (Anchored Bottom-Left)
+ * ===================================================================== */
+
+@import "config.rasi"
+
+window {
+    location:           south west;
+    anchor:             south west;
+    xoffset:            0px;
+    yoffset:            -20px; /* Aligns with 20pt Polybar panel */
+    width:              380px;
+    border-radius:      5px 5px 0px 0px;
+}
+
+prompt {
+    str:                "Search:";
+    font:               "Tahoma Bold 10";
+}
+
+listview {
+    lines:              10;
+    padding:            6px 4px;
+}
+
+element {
+    padding:            6px 8px;
+}
+
+element-icon {
+    size:               24px;
+}

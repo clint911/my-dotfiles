@@ -1,0 +1,10 @@
+ configuration {
+    modi:               "drun,run,window";
+    font:               "Tahoma 10";
+    show-icons:         true;
+    icon-theme:         "Papirus"; /* Or your preferred icon theme */
+    drun-display-format: "{name}";
+    sidebar-mode:       false;
+}
+
+@theme "xp-luna"
