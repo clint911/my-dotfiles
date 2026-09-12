@@ -123,6 +123,13 @@ bindsym $super+Down focus down
 bindsym $super+Up focus up
 bindsym $super+Right focus right
 
+ # Cycle forward through windows on current workspace
+bindsym $super+Tab focus next
+
+# Cycle backward through windows
+bindsym $super+Shift+Tab focus prev
+
+
 # move focused window
 bindsym $super+Shift+Left move left
 bindsym $super+Shift+Down move down

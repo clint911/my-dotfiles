@@ -5,7 +5,16 @@ function ColorMyPencils(color)
 	vim.cmd.colorscheme(color)
 
 	vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-	vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+	-- Reuse rose-pine palette so floats stay readable with transparent bg.
+	-- palette: base #191724, surface #1f1d2e, overlay #26233a, rose #ebbcba, etc.
+	local ok, palette = pcall(require, "rose-pine.palette")
+	if ok then
+		vim.api.nvim_set_hl(0, "NormalFloat", { bg = palette.surface })
+		vim.api.nvim_set_hl(0, "FloatBorder", { bg = palette.surface, fg = palette.subtle })
+		vim.api.nvim_set_hl(0, "NotifyBackground", { bg = palette.base })
+	else
+		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+	end
 
 end
 return {

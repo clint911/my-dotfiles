@@ -52,30 +52,54 @@ autocmd('LspAttach', {
         vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
         vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
         vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-        vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
+        vim.keymap.set("n", "<leader>vd", function()
+            vim.diagnostic.open_float({ scope = "line", border = "rounded", source = "always", max_width = 80, wrap = true })
+        end, opts)
+        vim.keymap.set("n", "<leader>E", function()
+            vim.diagnostic.open_float({ scope = "line", border = "rounded", source = "always", max_width = 80, wrap = true })
+        end, vim.tbl_extend("force", opts, { desc = "Diagnostics: full error float" }))
+        vim.keymap.set("n", "T", function()
+            vim.diagnostic.open_float({ scope = "line", border = "rounded", source = "always", max_width = 80, wrap = true })
+        end, vim.tbl_extend("force", opts, { desc = "Diagnostics: full error float" }))
         vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
         vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
         vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
         vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-        vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-        vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+        vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end, opts)
+        vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end, opts)
     end
 })
- vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    update_in_insert = true, r
-  }
-)
-vim.diagnostic.config({ virtual_text = true })
+-- Virtual text restored: always-visible inline errors, truncated for splits.
+-- Full text via <leader>vd (float) and <leader>tt / <leader>tb (Trouble).
 vim.diagnostic.config({
-  virtual_text = {
-    -- source = "always",  -- Or "if_many"
-    prefix = '●', -- Could be '■', '▎', 'x'
-  },
-  severity_sort = true,
-  float = {
-    source = "always", -- Or "if_many"
-  },
+    virtual_text = {
+        prefix = '●',
+        spacing = 4,
+        source = "if_many",
+        format = function(diagnostic)
+            local msg = diagnostic.message
+            local max = 60
+            if vim.fn.strchars(msg) > max then
+                msg = vim.fn.strcharpart(msg, 0, max) .. "…"
+            end
+            return msg
+        end,
+    },
+    virtual_lines = false,
+    update_in_insert = false,
+    severity_sort = true,
+    underline = true,
+    signs = true,
+    float = {
+        focusable = false,
+        style = "minimal",
+        border = "rounded",
+        source = "always", -- Or "if_many"
+        header = "",
+        prefix = "",
+        max_width = 80,
+        wrap = true,
+    },
 })
 
 vim.g.netrw_browse_split = 0

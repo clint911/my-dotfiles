@@ -24,7 +24,12 @@ vim.keymap.set("n", "<leader>svwm", function()
   require("vim-with-me").StopVimWithMe()
 end)
 
+vim.keymap.set("n", "<leader>ss", ":split<Return>", opts)
+vim.keymap.set("n", "<leader>vs", ":vsplit<Return>", opts)
 
+
+vim.keymap.set("n", "<tab>", ":tabnext<Return>", opts)
+vim.keymap.set("n", "<s-tab>", ":tabprev<Return>", opts)
 -- greatest remap ever
 vim.keymap.set("x", "<leader>p", [["_dP]])
 

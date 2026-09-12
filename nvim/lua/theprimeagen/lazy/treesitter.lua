@@ -1,45 +1,50 @@
-return {
+ return {
   "nvim-treesitter/nvim-treesitter",
+  branch = "main", -- Ensure you are tracking the modern rewrite branch
   build = ":TSUpdate",
   config = function()
-      require("nvim-treesitter.configs").setup({
-          -- A list of parser names, or "all"
-          ensure_installed = {
+    local ts = require("nvim-treesitter")
 
+    -- 1. Configure custom or external parsers
+    ts.setup({
+      local_parsers = {
+        templ = {
+          source = {
+            type = "self_contained",
+            url = "https://github.com/vrischmann/tree-sitter-templ.git",
           },
+          filetypes = { "templ" },
+        },
+      },
+    })
 
-          -- Install parsers synchronously (only applied to `ensure_installed`)
-          sync_install = false,
+    -- 2. Replace 'ensure_installed' by explicitly calling install
+    ts.install({
+      "lua",
+      "go",
+      "javascript",
+      "typescript",
+      "markdown",
+      -- Add any other languages you want auto-managed
+    })
 
-          -- Automatically install missing parsers when entering buffer
-          -- Recommendation: set to false if you don"t have `tree-sitter` CLI installed locally
-          auto_install = true,
+    -- 3. Native Filetype Mapping
+    vim.filetype.add({
+      extension = {
+        templ = "templ",
+      },
+    })
 
-          indent = {
-              enable = true
-          },
+    -- 4. Native Highlighting & Indentation Toggle
+    -- Instead of old plugin modules, we spin up the built-in Neovim engines
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = { "templ", "lua", "go", "javascript", "typescript", "markdown" },
+      callback = function()
+        vim.treesitter.start()
 
-          highlight = {
-              -- `false` will disable the whole extension
-              enable = true,
-
-              -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-              -- Set this to `true` if you depend on "syntax" being enabled (like for indentation).
-              -- Using this option may slow down your editor, and you may see some duplicate highlights.
-              -- Instead of true it can also be a list of languages
-              additional_vim_regex_highlighting = { "markdown" },
-          },
-      })
-
-      local treesitter_parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-      treesitter_parser_config.templ = {
-          install_info = {
-              url = "https://github.com/vrischmann/tree-sitter-templ.git",
-              files = {"src/parser.c", "src/scanner.c"},
-              branch = "master",
-          },
-      }
-
-      vim.treesitter.language.register("templ", "templ")
-  end
+        -- Enables native tree-sitter based indentation tracking
+        vim.bo.indentexpr = "v:lua.vim.treesitter.indentexpr()"
+      end,
+    })
+  end,
 }

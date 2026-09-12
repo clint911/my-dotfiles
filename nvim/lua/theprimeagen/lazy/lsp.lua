@@ -85,7 +85,24 @@ return {
       })
 
       vim.diagnostic.config({
-           update_in_insert = true,
+           virtual_text = {
+               prefix = '●',
+               spacing = 4,
+               source = "if_many",
+               format = function(diagnostic)
+                   local msg = diagnostic.message
+                   local max = 60
+                   if vim.fn.strchars(msg) > max then
+                       msg = vim.fn.strcharpart(msg, 0, max) .. "…"
+                   end
+                   return msg
+               end,
+           },
+           virtual_lines = false,
+           update_in_insert = false,
+           severity_sort = true,
+           underline = true,
+           signs = true,
           float = {
               focusable = false,
               style = "minimal",
@@ -93,6 +110,8 @@ return {
               source = "always",
               header = "",
               prefix = "",
+              max_width = 80,
+              wrap = true,
           },
       })
   end
