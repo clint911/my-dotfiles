@@ -1,0 +1,198 @@
+/* ~/.config/waybar/style.css   (ricing round 3 - "Soft Systems" hardware panel) */
+
+@define-color pink       #f4b8ce;
+@define-color pink-light #ffe7f0;
+@define-color mauve      #b76e8c;
+@define-color plum       #492638;
+@define-color ink        #2a0f40;
+@define-color ivory      #fff3f7;
+@define-color raspberry  #a72e62;
+@define-color alert      #d00046;
+@define-color warn       #9a4a00;
+@define-color dim        #b99aa9;
+
+* {
+    font-family: "DM Mono", "VictorMono Nerd Font", "Tahoma", "DejaVu Sans", "FontAwesome";
+    font-size: 10pt;
+    font-weight: 500;
+    font-style: normal;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+}
+
+/* ===================== THE BAR ===================== */
+/* OPACITY: the last number of each rgba() (0 = invisible, 1 = solid).
+   Same transparency idea as before: bar ~0.45, keys/displays ~0.5-0.7. */
+window#waybar {
+    background: rgba(244, 184, 206, 0.45);
+    color: @ink;
+    border: 1px solid rgba(255, 231, 240, 0.9);
+    border-bottom: 1px solid #bc7693;
+    border-radius: 16px;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 246, 250, 0.8),
+        inset 0 -3px 0 rgba(133, 64, 93, 0.20);
+}
+
+/* ===================== RAISED KEYS (bevelled buttons) ===================== */
+#window, #custom-power, #custom-logout, #custom-suspend, #custom-hibernate,
+#custom-reboot, #custom-poweroff,
+#workspaces button, #custom-media-prev, #custom-media-next {
+    color: @ink;
+    background-image: linear-gradient(180deg, rgba(255, 219, 232, 0.65), rgba(234, 166, 192, 0.65));
+    border: 1px solid rgba(125, 58, 87, 0.30);
+    border-bottom: 1px solid rgba(103, 42, 68, 0.55);
+    border-radius: 9px;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.80),
+        0 2px 2px rgba(87, 36, 58, 0.20);
+    padding: 0 12px;
+    margin: 4px 3px;
+    transition: background 0.14s ease, box-shadow 0.14s ease;
+}
+
+#window:hover, #custom-power:hover,  #custom-logout:hover, #custom-suspend:hover,#custom-hibernate:hover,#custom-reboot:hover, #custom-poweroff:hover,
+#custom-media-prev:hover, #custom-media-next:hover {
+    background-image: linear-gradient(180deg, rgba(255, 233, 241, 0.80), rgba(244, 184, 206, 0.80));
+}
+
+#custom-power:active, #custom-logout:active, #custom-suspend:active,
+#custom-hibernate:active,#custom-reboot:active, #custom-poweroff:active,
+#custom-media-prev:active, #custom-media-next:active {
+    box-shadow: inset 0 2px 3px rgba(82, 33, 54, 0.30);
+}
+
+/* window title is a label, not a button: no hover/press */
+#window { color: @ink; }
+
+/* ===================== WORKSPACES (recessed track + keys) ===================== */
+#workspaces {
+    background: rgba(217, 148, 175, 0.46);
+    border-radius: 10px;
+    padding: 2px;
+    margin: 5px 3px;
+    box-shadow:
+        inset 0 2px 4px rgba(77, 31, 50, 0.28),
+        0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+#workspaces button {
+    background-image: none;
+    background: transparent;
+    border: 1px solid transparent;
+    box-shadow: none;
+    color: @ink;
+    border-radius: 7px;
+    padding: 0 9px;
+    margin: 0 1px;
+}
+#workspaces button:hover   { background: rgba(255, 231, 240, 0.45); }
+#workspaces button.focused,
+#workspaces button.active  {
+    background-image: none;
+    background: @raspberry;
+    color: @ivory;
+    box-shadow:
+        inset 0 2px 3px rgba(55, 12, 30, 0.35),
+        0 1px 0 rgba(255, 255, 255, 0.50);
+}
+#workspaces button.urgent  { background: @alert; color: @ivory; }
+
+/* ===================== CLOCK (plum recessed display) ===================== */
+/* text colors come from the <span> tags in config.jsonc */
+#clock {
+    color: @ivory;
+    background: rgba(73, 38, 56, 0.72);
+    border: 1px solid rgba(81, 34, 54, 0.80);
+    border-bottom: 1px solid rgba(255, 231, 240, 0.55);
+    border-radius: 9px;
+    box-shadow:
+        inset 0 3px 6px rgba(13, 3, 8, 0.42),
+        0 1px 0 rgba(255, 255, 255, 0.55);
+    padding: 0 16px;
+    margin: 4px 3px;
+}
+#clock:hover { background: rgba(98, 52, 76, 0.80); }
+
+/* ===================== MUSIC STRIP ===================== */
+/* [ prev | title | next ] joined into ONE strip.
+   prev -> rounded left, next -> rounded right, title = plum screen in the middle. */
+#custom-media-prev, #custom-media-next { margin: 4px 0; padding: 0 10px; }
+#custom-media-prev { border-radius: 9px 0 0 9px; padding-left: 14px;  margin-left: 3px; }
+#custom-media-next { border-radius: 0 9px 9px 0; padding-right: 14px; margin-right: 3px; }
+
+#custom-media {
+    color: @ivory;
+    background: rgba(73, 38, 56, 0.72);
+    border-top: 1px solid rgba(81, 34, 54, 0.80);
+    border-bottom: 1px solid rgba(255, 231, 240, 0.55);
+    border-radius: 0;
+    box-shadow: inset 0 3px 6px rgba(13, 3, 8, 0.42);
+    margin: 4px 0;
+    padding: 0 10px;
+}
+#custom-media:hover { background: rgba(98, 52, 76, 0.80); }
+
+/* paused: all three pieces go dim together
+   (the buttons get the same class from scripts/media-btn.sh) */
+#custom-media-prev.paused, #custom-media-next.paused { color: @mauve; }
+#custom-media.paused { color: @dim; }
+
+/* ===================== STATUS TRAY (recessed group) ===================== */
+#stats, #tray {
+    background: rgba(217, 148, 175, 0.46);
+    border-radius: 9px;
+    box-shadow:
+        inset 0 1px 3px rgba(84, 34, 55, 0.25),
+        0 1px 0 rgba(255, 255, 255, 0.50);
+    margin: 5px 3px;
+}
+#tray { padding: 0 10px; }
+
+#network, #memory, #cpu, #pulseaudio {
+    background: transparent;
+    color: @ink;
+    padding: 0 11px;
+    margin: 0;
+}
+/* thin engraved separators between stats */
+#memory, #cpu, #pulseaudio {
+    border-left: 1px solid rgba(173, 104, 133, 0.70);
+    box-shadow: -1px 0 0 rgba(255, 231, 240, 0.60);
+}
+
+#network.disconnected { color: @mauve; }
+#pulseaudio.muted     { color: @alert; }
+#cpu.warning,  #memory.warning  { color: @warn; }
+#cpu.critical, #memory.critical { color: @alert; }
+
+#tray > .passive         { -gtk-icon-effect: dim; }
+#tray > .needs-attention { -gtk-icon-effect: highlight; }
+
+/* ===================== POWER DRAWER ===================== */
+#custom-power    { color: @ink; border-radius: 50%; padding: 0 11px; }
+ #custom-logout, #custom-suspend, #custom-hibernate, #custom-reboot { color: @ink; }
+#custom-poweroff {
+    color: @ivory;
+    background-image: linear-gradient(180deg, rgba(189, 65, 117, 0.85), rgba(157, 40, 89, 0.85));
+    border-color: rgba(130, 33, 73, 0.9);
+}
+#custom-poweroff:hover {
+    background-image: linear-gradient(180deg, rgba(205, 80, 132, 0.95), rgba(167, 46, 98, 0.95));
+}
+
+/* ===================== TOOLTIP (calendar on hover) ===================== */
+tooltip {
+    background: rgba(73, 38, 56, 0.92);
+    border: 1px solid #b76e8c;
+    border-bottom: 3px solid #b76e8c;
+    border-radius: 12px;
+}
+tooltip label {
+    color: @ivory;
+    padding: 6px;
+    font-family: "DM Mono", "VictorMono Nerd Font", monospace;
+    font-style: normal;
+}
+

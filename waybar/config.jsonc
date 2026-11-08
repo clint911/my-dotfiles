@@ -1,0 +1,144 @@
+
+// ~/.config/waybar/config.jsonc   (ricing round 3 - "Soft Systems" hardware panel)
+{
+    "layer": "top",
+    "position": "top",
+    "exclusive": false,
+    "height": 38,
+    "margin-top": 6,
+    "margin-left": 20,
+    "margin-right": 20,
+    // 0 so the music buttons can touch each other; pill spacing is done in style.css
+    "spacing": 0,
+//    "output": "HDMI-A-1",
+
+    // Same layout as the website panel: workspaces left, clock centered, status right.
+    "modules-left":   ["sway/workspaces", "sway/window"],
+    "modules-center": ["clock"],
+    "modules-right":  ["custom/media-prev", "custom/media", "custom/media-next", "group/stats", "tray", "group/power"],
+
+    "sway/workspaces": {
+        "all-outputs": false,
+        "disable-scroll": true,
+        "format": "{name}"
+    },
+
+    // ================= DATE + TIME (recessed plum display) =================
+    // Hover  -> calendar tooltip | Click -> calendar popup script
+    // Right-click while hovering -> month/year view | Scroll -> prev/next month
+    // If waybar complains about "format", fall back to: "format": "{:%d/%m  %H:%M:%S}"
+    "clock": {
+        "interval": 1,
+        "format": "<span color='#EDBFD1'>\uf073 {0:%d/%m/%Y}</span>   <span color='#F4B8CE'>\uf017</span> <span color='#FFF3F7'><b>{0:%H:%M}</b></span><span color='#E8AEC5'>:{0:%S}</span>",
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "format": {
+                "months":   "<span color='#F4B8CE'><b>{}</b></span>",
+                "weekdays": "<span color='#E8AEC5'><b>{}</b></span>",
+                "days":     "<span color='#FFF3F7'>{}</span>",
+                "weeks":    "<span color='#B76E8C'><i>{}</i></span>",
+                "today":    "<span bgcolor='#A72E62' color='#FFF3F7'><b> {} </b></span>"
+            }
+        },
+        "on-click": "~/.config/waybar/scripts/calendar-toggle.sh",
+        "actions": {
+            "on-click-right": "mode",
+            "on-scroll-up":   "shift_up",
+            "on-scroll-down": "shift_down"
+        }
+    },
+
+    "sway/window": {
+        "format": "{title}",
+        "max-length": 30
+    },
+
+    // ================= MUSIC: [prev] [scrolling title] [next] =================
+    // exec-if hides the buttons when no player is running.
+    "custom/media-prev": {
+        "exec": "~/.config/waybar/scripts/media-btn.sh \uf048",
+        "exec-if": "playerctl status",
+        "return-type": "json",
+        "interval": 1,
+        "format": "{}",
+        "on-click": "playerctl previous",
+        "tooltip": false
+    },
+    // Scrolling title (scripts/media.sh). Click = play/pause.
+    "custom/media": {
+        "exec": "~/.config/waybar/scripts/media.sh",
+        "return-type": "json",
+        "format": "{}",
+        "escape": true,
+        "on-click": "playerctl play-pause",
+        "on-scroll-up": "playerctl next",
+        "on-scroll-down": "playerctl previous"
+    },
+    "custom/media-next": {
+        "exec": "~/.config/waybar/scripts/media-btn.sh \uf051",
+        "exec-if": "playerctl status",
+        "return-type": "json",
+        "interval": 1,
+        "format": "{}",
+        "on-click": "playerctl next",
+        "tooltip": false
+    },
+
+    // ================= STATUS TRAY (one recessed group, like the website) =================
+    "group/stats": {
+        "orientation": "inherit",
+        "modules": ["network", "memory", "cpu", "pulseaudio"]
+    },
+
+    "network": {
+        "interface": "eno1",
+        "interval": 2,
+        "format-ethernet": "<span color='#A72E62'>\u21e3</span> {bandwidthDownBytes}  <span color='#A72E62'>\u21e1</span> {bandwidthUpBytes}",
+        "format-disconnected": "\uf071  Offline",
+        "tooltip-format": "{ifname}: {ipaddr}"
+    },
+
+    "memory": {
+        "interval": 3,
+        "format": "\uf538  {used:0.1f}G",
+        "states": { "warning": 70, "critical": 90 },
+        "tooltip-format": "{used:0.1f}G / {total:0.1f}G  ({percentage}%)"
+    },
+
+    "cpu": {
+        "interval": 2,
+        "format": "\uf2db  {usage}%",
+        "states": { "warning": 70, "critical": 90 }
+    },
+
+    "pulseaudio": {
+        "format": "{icon}  {volume}%",
+        "format-muted": "\uf026  Muted",
+        "format-icons": { "default": ["\uf027", "\uf028"] },
+        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "on-click-right": "pavucontrol",
+        "scroll-step": 1
+    },
+
+    "tray": { "icon-size": 16, "spacing": 8 },
+
+    "group/power": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 300,
+            "children-class": "power-child",
+            "transition-left-to-right": false
+        },
+        "modules": ["custom/power",  "custom/logout", "custom/suspend", "custom/hibernate", "custom/reboot", "custom/poweroff"]
+    },
+    "custom/power":    { "format": "\uf011", "tooltip": false },
+"custom/logout":    { "format": "Logout",    "on-click": "swaymsg exit",         "tooltip": false },
+"custom/suspend":   { "format": "Suspend",   "on-click": "systemctl suspend",   "tooltip": false },
+"custom/hibernate": { "format": "Hibernate", "on-click": "systemctl hibernate", "tooltip": false },
+    "custom/reboot":   { "format": "Reboot",    "on-click": "systemctl reboot",   "tooltip": false },
+    "custom/poweroff": { "format": "Power Off", "on-click": "systemctl poweroff", "tooltip": false }
+}
